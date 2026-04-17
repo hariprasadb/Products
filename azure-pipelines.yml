@@ -26,7 +26,7 @@ stages:
       displayName: Build an image
       inputs:
         command: build
-        buildContext: '$(Build.SourcesDirectory/ProductsMVC/'
+        buildContext: '.'
         dockerfile: '$(Build.SourcesDirectory)/ProductsMVC/ProductsMVC/Dockerfile'
         repository: $(IMAGE_NAME)
         tags: |

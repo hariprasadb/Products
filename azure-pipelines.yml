@@ -1,0 +1,51 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  IMAGE_NAME: hariprasadbrao/productsmvc
+
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        buildContext: '$(Build.SourcesDirectory)/ProductsMVC/'
+        dockerfile: '$(Build.SourcesDirectory)/ProductsMVC/ProductsMVC/Dockerfile'
+        repository: $(IMAGE_NAME)
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Push image to Docker Hub
+      inputs:
+        containerRegistry: 'haridocker'
+        repository: $(IMAGE_NAME)
+        command: 'push'
+        tags: '$(TAG)'
+- stage: Deploy
+  displayName: Deploy to Container Apps
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    steps:
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Azure subscription 1(c6489856-3c34-4088-8cfc-51bb74fab031)'
+        appName: 'productsw'
+        containers: '$(IMAGE_NAME):$(TAG)'

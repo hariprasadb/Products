@@ -1,0 +1,14 @@
+- task: AzureContainerApps@1
+  displayName: Deploy new container version
+  inputs:
+    azureSubscription: 'Azure subscription 1(c6489856-3c34-4088-8cfc-51bb74fab031)'
+    imageToDeploy: '$(IMAGE_NAME):$(TAG)'
+    containerAppName: '$(CONTAINERAPPS_APP)'
+    resourceGroup: '$(RESOURCE_GROUP)'
+    containerAppEnvironment: '$(CONTAINERAPPS_ENVIRONMENT)'
+    targetPort: '8080'
+    ingress: 'external'
+    environmentVariables: |
+      ASPNETCORE_ENVIRONMENT=Production
+      ConnectionStrings__DefaultConnection=$(DB_CONNECTION)
+      Logging__LogLevel__Default=Information

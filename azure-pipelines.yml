@@ -61,5 +61,5 @@ stages:
             containerAppName: '$(CONTAINERAPPS_APP)'
             resourceGroup: '$(RESOURCE_GROUP)'
             containerAppEnvironment: '$(CONTAINERAPPS_ENVIRONMENT)'
-            targetPort: '3500'
+            targetPort: '8080'
             ingress: 'external'
